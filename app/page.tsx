@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { PrismaClient } from "@prisma/client";
 
 const cards = [
   {
@@ -33,14 +34,16 @@ const cards = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const prisma = new PrismaClient()
+  const aomna = await prisma.work_cloud.findMany()
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-pink-100 to-yellow-100 py-10">
       <h1 className="text-4xl font-extrabold text-center text-pink-700 mb-10 drop-shadow-lg tracking-wide">
         Naphat Chindaprathum 66311438
       </h1>
       <div className="flex flex-wrap justify-center gap-8 px-4">
-        {cards.map((card, idx) => (
+        {aomna.map((card, idx) => (
           <div
             key={idx}
             className="bg-white max-w-xs rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col"
@@ -48,8 +51,8 @@ export default function Home() {
             <div className="relative h-56 w-full">
               <Image
                 className="object-cover"
-                src={card.src}
-                alt={card.title}
+                src={card.img_art}
+                alt={card.name_of_headimg}
                 fill
                 sizes="(max-width: 320px) 100vw, 320px"
                 style={{
@@ -60,9 +63,9 @@ export default function Home() {
             </div>
             <div className="px-6 py-4 flex-1 flex flex-col">
               <div className="font-bold text-xl mb-2 text-blue-800">
-                {card.title}
+                {card.name_of_headimg}
               </div>
-              <p className="text-gray-600 text-base mb-4 flex-1">{card.desc}</p>
+              <p className="text-gray-600 text-base mb-4 flex-1">{card.texter_img}</p>
             </div>
           </div>
         ))}
